@@ -105,7 +105,19 @@ if analyze_button:
                     risk_score
                 )
             )
-
+        graph_file = create_dependency_graph(
+        package_name,
+        dependencies
+    )
+    
+    report_file = generate_report(
+        package_name,
+        dependencies,
+        vulnerabilities,
+        license_info,
+        risk_score,
+        risk_level
+    )
         st.success(
             "Analysis Complete"
         )
@@ -185,6 +197,11 @@ if analyze_button:
             st.info(
                 "No dependencies found."
             )
+        st.divider()
+
+        st.subheader("Dependency Graph")
+        
+        st.image(graph_file)
 
         st.divider()
 
@@ -211,6 +228,16 @@ if analyze_button:
             st.success(
                 "No vulnerabilities found."
             )
+            st.divider()
+
+    with open(report_file, "rb") as pdf:
+    
+        st.download_button(
+            label="Download PDF Report",
+            data=pdf,
+            file_name=f"{package_name}_report.pdf",
+            mime="application/pdf"
+        )
 
 
 st.divider()
