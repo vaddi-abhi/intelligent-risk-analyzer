@@ -180,54 +180,19 @@ streamlit run app.py
 
 ### Home Page
 
-Add screenshot:
-
-```text
-screenshots/home.png
-```
-
-```markdown
 ![Home Page](screenshots/home.png)
-```
 
----
+### Analysis Result 1
 
-### Analysis Results
+![Analysis Result 1](screenshots/analysis1.png)
 
-Add screenshot:
+### Analysis Result 2
 
-```text
-screenshots/analysis1.png
-```
-
-```markdown
-![Analysis Results](screenshots/analysis1.png)
-```
-
-```text
-screenshots/analysis2.png
-```
-
-```markdown
-![Analysis Results](screenshots/analysis2.png)
-```
-
----
+![Analysis Result 2](screenshots/analysis2.png)
 
 ### Dependency Graph
 
-Add screenshot:
-
-```text
-screenshots/graph.png
-```
-
-```markdown
 ![Dependency Graph](screenshots/graph.png)
-```
-
----
-
 ## Example Analysis
 
 ### Input
