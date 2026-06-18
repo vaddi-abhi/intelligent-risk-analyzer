@@ -1,23 +1,25 @@
 import streamlit as st
 
 from src.dependency_analyzer import get_dependencies
-from src.report_generator import (
-    generate_report
-)
-
-from src.graph_generator import (
-    create_dependency_graph
-)
 from src.vulnerability_checker import check_vulnerabilities
 from src.license_checker import get_license
 from src.risk_calculator import (
     calculate_risk_score,
     get_risk_level
 )
+from src.report_generator import generate_report
+from src.graph_generator import create_dependency_graph
 
-st.sidebar.title(
-    "Project Information"
+
+# MUST BE THE FIRST STREAMLIT COMMAND
+st.set_page_config(
+    page_title="Intelligent Risk Analyzer",
+    page_icon="🛡️",
+    layout="wide"
 )
+
+# Sidebar
+st.sidebar.title("Project Information")
 
 st.sidebar.markdown("""
 ### Features
@@ -30,20 +32,21 @@ st.sidebar.markdown("""
 
 ✅ Risk Scoring
 
-Built using:
+✅ Dependency Graph
+
+✅ PDF Report Generation
+
+Built Using:
 
 - Python
 - Streamlit
 - PyPI API
 - OSV API
+- NetworkX
+- ReportLab
 """)
 
-st.set_page_config(
-    page_title="Intelligent Risk Analyzer",
-    page_icon="🛡️",
-    layout="wide"
-)
-
+# Main Title
 st.title("🛡️ Intelligent Vulnerability & License Risk Analyzer")
 
 st.markdown("""
@@ -55,15 +58,15 @@ Analyze Python packages for:
 - Overall Risk Score
 """)
 
+# Input
 package_name = st.text_input(
     "Enter Python Package Name",
     placeholder="Example: requests"
 )
 
-analyze_button = st.button(
-    "Analyze Package"
-)
+analyze_button = st.button("Analyze Package")
 
+# Main Logic
 if analyze_button:
 
     if not package_name.strip():
@@ -82,46 +85,43 @@ if analyze_button:
                 package_name
             )
 
-            vulnerabilities = (
-                check_vulnerabilities(
-                    package_name
-                )
+            vulnerabilities = check_vulnerabilities(
+                package_name
             )
 
             license_info = get_license(
                 package_name
             )
 
-            risk_score = (
-                calculate_risk_score(
-                    vulnerabilities,
-                    dependencies,
-                    license_info["risk"]
-                )
+            risk_score = calculate_risk_score(
+                vulnerabilities,
+                dependencies,
+                license_info["risk"]
             )
 
-            risk_level = (
-                get_risk_level(
-                    risk_score
-                )
+            risk_level = get_risk_level(
+                risk_score
             )
-        graph_file = create_dependency_graph(
-        package_name,
-        dependencies
-    )
-    
-    report_file = generate_report(
-        package_name,
-        dependencies,
-        vulnerabilities,
-        license_info,
-        risk_score,
-        risk_level
-    )
+
+            graph_file = create_dependency_graph(
+                package_name,
+                dependencies
+            )
+
+            report_file = generate_report(
+                package_name,
+                dependencies,
+                vulnerabilities,
+                license_info,
+                risk_score,
+                risk_level
+            )
+
         st.success(
             "Analysis Complete"
         )
 
+        # Metrics
         col1, col2, col3 = st.columns(3)
 
         with col1:
@@ -142,6 +142,7 @@ if analyze_button:
                 risk_score
             )
 
+        # Risk Section
         st.divider()
 
         st.subheader(
@@ -149,25 +150,30 @@ if analyze_button:
         )
 
         if risk_level == "Low":
+
             st.success(
                 f"Risk Level: {risk_level}"
             )
 
         elif risk_level == "Medium":
+
             st.warning(
                 f"Risk Level: {risk_level}"
             )
 
         elif risk_level == "High":
+
             st.error(
                 f"Risk Level: {risk_level}"
             )
 
         else:
+
             st.error(
                 f"Risk Level: {risk_level}"
             )
 
+        # License Section
         st.divider()
 
         st.subheader(
@@ -182,6 +188,7 @@ if analyze_button:
             f"License Risk: {license_info['risk']}"
         )
 
+        # Dependency Section
         st.divider()
 
         st.subheader(
@@ -191,18 +198,29 @@ if analyze_button:
         if dependencies:
 
             for dep in dependencies:
-                st.write(f"• {dep}")
+
+                st.write(
+                    f"• {dep}"
+                )
 
         else:
+
             st.info(
                 "No dependencies found."
             )
+
+        # Graph Section
         st.divider()
 
-        st.subheader("Dependency Graph")
-        
-        st.image(graph_file)
+        st.subheader(
+            "Dependency Graph"
+        )
 
+        st.image(
+            graph_file
+        )
+
+        # Vulnerability Section
         st.divider()
 
         st.subheader(
@@ -214,11 +232,11 @@ if analyze_button:
             for vuln in vulnerabilities:
 
                 st.error(
-                    f"{vuln['id']}"
+                    vuln["id"]
                 )
 
                 st.write(
-                    vuln['summary']
+                    vuln["summary"]
                 )
 
                 st.write("---")
@@ -228,20 +246,25 @@ if analyze_button:
             st.success(
                 "No vulnerabilities found."
             )
-            st.divider()
 
-    with open(report_file, "rb") as pdf:
-    
-        st.download_button(
-            label="Download PDF Report",
-            data=pdf,
-            file_name=f"{package_name}_report.pdf",
-            mime="application/pdf"
-        )
+        # Download Report
+        st.divider()
 
+        with open(
+            report_file,
+            "rb"
+        ) as pdf:
 
+            st.download_button(
+                label="📄 Download PDF Report",
+                data=pdf,
+                file_name=f"{package_name}_report.pdf",
+                mime="application/pdf"
+            )
+
+# Footer
 st.divider()
 
 st.caption(
-    "Developed by Abhi Vaddi | NIT Durgapur"
+    "Developed by Abhinav Vaddi | NIT Durgapur"
 )
