@@ -1,26 +1,19 @@
-
-
+import os
 import networkx as nx
 import matplotlib.pyplot as plt
 
 
-def create_dependency_graph(
-    package_name,
-    dependencies
-):
+def create_dependency_graph(package_name, dependencies):
+
+    os.makedirs("reports", exist_ok=True)
 
     graph = nx.DiGraph()
 
     graph.add_node(package_name)
 
     for dep in dependencies:
-
         graph.add_node(dep)
-
-        graph.add_edge(
-            package_name,
-            dep
-        )
+        graph.add_edge(package_name, dep)
 
     plt.figure(figsize=(8, 6))
 
@@ -29,9 +22,7 @@ def create_dependency_graph(
         with_labels=True
     )
 
-    filename = (
-        f"reports/{package_name}_graph.png"
-    )
+    filename = f"reports/{package_name}_graph.png"
 
     plt.savefig(filename)
 
