@@ -266,5 +266,5 @@ if analyze_button:
 st.divider()
 
 st.caption(
-    "Developed by Abhinav Vaddi | NIT Durgapur"
+    "Developed by Abhi Vaddi | NIT Durgapur"
 )
