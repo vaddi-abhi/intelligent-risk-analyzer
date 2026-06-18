@@ -1,6 +1,13 @@
 import streamlit as st
 
 from src.dependency_analyzer import get_dependencies
+from src.report_generator import (
+    generate_report
+)
+
+from src.graph_generator import (
+    create_dependency_graph
+)
 from src.vulnerability_checker import check_vulnerabilities
 from src.license_checker import get_license
 from src.risk_calculator import (
