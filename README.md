@@ -45,11 +45,11 @@ streamlit run app.py
 ## Project Structure
 
 src/
-dependency_analyzer.py
-vulnerability_checker.py
-license_checker.py
-risk_calculator.py
-report_generator.py
+-dependency_analyzer.py
+-vulnerability_checker.py
+-license_checker.py
+-risk_calculator.py
+-report_generator.py
 
 ---
 
